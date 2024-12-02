@@ -20,4 +20,3 @@ const isSafeAndSortedDescending = (array) => {
 
 const safeReports = reports.filter(report => isSafeAndSortedAscending(report) || isSafeAndSortedDescending(report)).length
 console.log(safeReports)
-

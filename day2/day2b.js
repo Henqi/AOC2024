@@ -15,11 +15,7 @@ const isSafeAndSortedAscending = (array) => {
     subArrays.push(array)
     const result = subArrays.map(subArray => {
         return subArray.every((value, index) => {
-            if ((index === 0 || (value > subArray[index-1] && thresholdMin <= Math.abs(value - subArray[index-1]) && Math.abs(value - subArray[index-1]) <= thresholdMax))) {
-                return true
-            } else {
-                return false
-            }
+            return ((index === 0 || (value > subArray[index-1] && thresholdMin <= Math.abs(value - subArray[index-1]) && Math.abs(value - subArray[index-1]) <= thresholdMax)))
         })
     })
     return result.some(value => value === true)
@@ -30,11 +26,7 @@ const isSafeAndSortedDescending = (array) => {
     subArrays.push(array)
     const result = subArrays.map(subArray => {
         return subArray.every((value, index) => {
-            if (index === 0 || (value < subArray[index-1] && thresholdMin <= Math.abs(value - subArray[index-1]) && Math.abs(value - subArray[index-1]) <= thresholdMax)) {
-                return true
-            } else {
-                return false
-            }
+            return (index === 0 || (value < subArray[index-1] && thresholdMin <= Math.abs(value - subArray[index-1]) && Math.abs(value - subArray[index-1]) <= thresholdMax))
         })
     })
     return result.some(value => value === true)

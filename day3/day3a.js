@@ -10,7 +10,7 @@ const multiplicationStrings = memoryDump.flatMap(stringData => stringData.match(
 const numbersToMultiply = multiplicationStrings.map(string => string.match(/\d+/g).map(Number))
 
 const result = numbersToMultiply.map(values => values[0]*values[1]).reduce((accumulator, item) => {
-    return accumulator + item
+  return accumulator + item
 }, 0)
 
 console.log(result)

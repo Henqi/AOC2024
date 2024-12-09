@@ -14,8 +14,7 @@ const checkIfCorrectOrder = (update) => {
     if (update.indexOf(rules[i][0]) === -1 || update.indexOf(rules[i][1]) === -1) {
       continue 
     }
-    if (update.indexOf(rules[i][0]) < update.indexOf(rules[i][1])) {
-    } else {
+    if (!(update.indexOf(rules[i][0]) < update.indexOf(rules[i][1]))) {
       return false
     }
   }

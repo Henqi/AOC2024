@@ -7,7 +7,7 @@ let wrongUpdates = []
 const rulesAndUpdates = fs.readFileSync(inputFileName, 'utf-8').trim().split('\n')
 
 const rules = rulesAndUpdates.slice(0, [rulesAndUpdates.indexOf('')]).map(rule => rule.split('|').map(Number))
-const updates = rulesAndUpdates.slice([rulesAndUpdates.indexOf('')+1], -1).map(update => update.split(',').map(Number))
+const updates = rulesAndUpdates.slice([rulesAndUpdates.indexOf('')+1]).map(update => update.split(',').map(Number))
 
 const checkIfCorrectOrder = (update) => {
   for (let i in rules) {

@@ -1,7 +1,7 @@
 import fs from 'fs'
 
-// const inputFileName = 'input.txt'
-const inputFileName = 'example.txt'
+const inputFileName = 'input.txt'
+// const inputFileName = 'example.txt'
 let correctUpdates = []
 let wrongUpdates = []
 
@@ -10,7 +10,8 @@ const rulesAndUpdates = fs.readFileSync(inputFileName, 'utf-8').trim().split('\n
 const rules = rulesAndUpdates.slice(0, [rulesAndUpdates.indexOf('')]).map(rule => rule.split('|').map(Number))
 const updates = rulesAndUpdates.slice([rulesAndUpdates.indexOf('')+1]).map(update => update.split(',').map(Number))
 
-function fixUpdateOrder(array, rules) {
+
+const fixUpdateOrder = (array, rules) => {
   // Parse rules into a directed graph
   const graph = new Map();
   const inDegree = new Map();
@@ -26,8 +27,8 @@ function fixUpdateOrder(array, rules) {
     graph.get(a).push(b);
 
     // Update in-degree
-    inDegree.set(b, (inDegree.get(b) || 0) + 1);
     inDegree.set(a, inDegree.get(a) || 0);
+    inDegree.set(b, (inDegree.get(b) || 0) + 1);
   });
 
   // Perform topological sort (Kahn's Algorithm)

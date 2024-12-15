@@ -1,7 +1,6 @@
 import fs from 'fs'
 
 const inputFileName = 'input.txt'
-// const inputFileName = 'example.txt'
 let correctUpdates = []
 let wrongUpdates = []
 
@@ -11,53 +10,51 @@ const rules = rulesAndUpdates.slice(0, [rulesAndUpdates.indexOf('')]).map(rule =
 const updates = rulesAndUpdates.slice([rulesAndUpdates.indexOf('')+1]).map(update => update.split(',').map(Number))
 
 
-const fixUpdateOrder = (array, rules) => {
-  // Parse rules into a directed graph
+function fixUpdateOrder(array, rules) {
+  // Filter rules to keep only those where both numbers exist in the update array
+  const relevantRules = rules.filter(([a, b]) => array.includes(a) && array.includes(b));
+
+  // Parse relevant rules into a directed graph
   const graph = new Map();
   const inDegree = new Map();
 
-  // Process rules to build graph and in-degree map
-  rules.forEach(rule => {
-    const a = rule[0]
-    const b = rule[1]
+  relevantRules.forEach(([a, b]) => {
+      if (!graph.has(a)) graph.set(a, []);
+      if (!graph.has(b)) graph.set(b, []);
 
-    if (!graph.has(a)) graph.set(a, []);
-    if (!graph.has(b)) graph.set(b, []);
+      graph.get(a).push(b);
 
-    graph.get(a).push(b);
-
-    // Update in-degree
-    inDegree.set(a, inDegree.get(a) || 0);
-    inDegree.set(b, (inDegree.get(b) || 0) + 1);
+      inDegree.set(a, inDegree.get(a) || 0);
+      inDegree.set(b, (inDegree.get(b) || 0) + 1);
   });
 
   // Perform topological sort (Kahn's Algorithm)
   const queue = [];
   for (const [node, degree] of inDegree) {
-    if (degree === 0) queue.push(node);
+      if (degree === 0) queue.push(node);
   }
 
   const sorted = [];
   while (queue.length > 0) {
-    const current = queue.shift();
-    sorted.push(current);
+      const current = queue.shift();
+      sorted.push(current);
 
-    for (const neighbor of graph.get(current) || []) {
-      inDegree.set(neighbor, inDegree.get(neighbor) - 1);
-      if (inDegree.get(neighbor) === 0) queue.push(neighbor);
-    }
+      for (const neighbor of graph.get(current) || []) {
+          inDegree.set(neighbor, inDegree.get(neighbor) - 1);
+          if (inDegree.get(neighbor) === 0) queue.push(neighbor);
+      }
   }
 
-  // Check for cycles (not all nodes processed)
+  // Check for cycles
   if (sorted.length !== graph.size) {
-    throw new Error("Rules contain a cycle, so no valid ordering exists.");
+      throw new Error("Rules contain a cycle, or array is invalid.");
   }
 
   // Rearrange the original array based on the sorted order
   const sortedSet = new Set(sorted);
   return array
-    .filter(num => sortedSet.has(num)) // Keep only numbers in the sorted graph
-    .sort((a, b) => sorted.indexOf(a) - sorted.indexOf(b)); // Sort by topological order
+      .filter(num => sortedSet.has(num)) // Keep only numbers in the sorted graph
+      .sort((a, b) => sorted.indexOf(a) - sorted.indexOf(b)); // Sort by topological order
 }
 
 const checkIfCorrectOrder = (update) => {

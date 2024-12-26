@@ -77,7 +77,7 @@ const moveGuard = (y, x, guardFacing) => {
 
   case DIRECTIONS.WEST:
     console.log('going WEST!')
-    if (mapMatrix[y]?.[x+1] === undefined) {
+    if (mapMatrix[y]?.[x-1] === undefined) {
       console.log('-------OUT OF MATRIX BOUNDS-------')
       visitedCoordinates.push(false)
     } else {
